@@ -44,7 +44,7 @@ jobs:
           set -e
           RESOURCE_GROUP_NAME="rg-cloudresumeapi"
           # az group show --name $RESOURCE_GROUP_NAME && terraform import azurerm_resource_group.rg_cloudresumeapi /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME || echo "Resource group not found, skipping import."
-          terraform import azurerm_resource_group.rg_cloudresumeapi /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
+          # terraform import azurerm_resource_group.rg_cloudresumeapi /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
         working-directory: './terraform'
       
       - name: 'Terraform Validate'
