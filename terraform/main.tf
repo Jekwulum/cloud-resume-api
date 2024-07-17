@@ -6,12 +6,12 @@ terraform {
     }
   }
 
-  # backend "azurerm" {
-  #   resource_group_name  = "rg-cloudresumeapi"
-  #   storage_account_name = "stcloudresumeapi"
-  #   container_name       = "stcontainercloudresumeapi"
-  #   key                  = "dev.terraform.tfstate"
-  # }
+  backend "azurerm" {
+    resource_group_name  = "rg-cloudresumeapi"
+    storage_account_name = "stcloudresumeapi"
+    container_name       = "stcontainercloudresumeapi"
+    key                  = "dev.terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
