@@ -19,3 +19,9 @@ resource "azurerm_resource_group" "main" {
     source      = "terraform"
   }
 }
+
+output "resourcegroup_name" {
+  value       = azurerm_resource_group.main.name
+  sensitive   = false
+  description = "Prints the name of the resource group"
+}
