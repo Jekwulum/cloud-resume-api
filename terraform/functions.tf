@@ -10,6 +10,13 @@ resource "azurerm_storage_account" "main" {
   }
 }
 
+# To store the tfstate file in a container, we need to create a container in the storage account
+resource "azurerm_storage_container" "main" {
+  name                  = "stcontainer${var.application_name}"
+  storage_account_name  = azurerm_storage_account.main.name
+  container_access_type = "private"
+}
+
 resource "azurerm_service_plan" "main" {
   name                = "asp${var.application_name}"
   resource_group_name = azurerm_resource_group.main.name
