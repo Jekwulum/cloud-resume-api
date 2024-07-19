@@ -7,5 +7,5 @@ variable "application_name" {
 variable "location" {
   description = "The location of the resources"
   type        = string
-  default     = "East US"
+  default     = "West US"
 }
