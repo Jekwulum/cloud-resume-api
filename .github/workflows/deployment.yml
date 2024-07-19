@@ -57,6 +57,7 @@ jobs:
           FUNCTION_APP_NAME="functioncloudresumeapi"
           SERVICE_PLAN_NAME="aspcloudresumeapi"
           STORAGE_ACCOUNT_NAME="stcloudresumeapi"
+          STORAGE_CONTAINER_NAME="stcontainercloudresumeapi"
 
           if az group show --name $RESOURCE_GROUP_NAME; then
             terraform import azurerm_resource_group.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
@@ -72,6 +73,10 @@ jobs:
 
           if az storage account show --name $STORAGE_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
             terraform import azurerm_storage_account.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME
+          fi
+
+          if az storage container show --name $STORAGE_CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME; then
+            terraform import azurerm_storage_container.main https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$STORAGE_CONTAINER_NAME
           fi
         working-directory: './terraform'
         env:
