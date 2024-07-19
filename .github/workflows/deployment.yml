@@ -54,7 +54,7 @@ jobs:
         run: |
           set -e
           RESOURCE_GROUP_NAME="rg-cloudresumeapi"
-          FUNCTION_APP_NAME="function-cloudresumeapi"
+          FUNCTION_APP_NAME="functioncloudresumeapi"
           SERVICE_PLAN_NAME="aspcloudresumeapi"
 
           if az group show --name $RESOURCE_GROUP_NAME; then
