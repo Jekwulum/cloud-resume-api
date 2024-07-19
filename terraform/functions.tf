@@ -33,7 +33,7 @@ resource "azurerm_linux_function_app" "main" {
   storage_account_name       = azurerm_storage_account.main.name
   storage_account_access_key = azurerm_storage_account.main.primary_access_key
   service_plan_id            = azurerm_service_plan.main.id
-  depends_on                 = [azurerm_service_plan.main, azurerm_storage_account.main]
+  # depends_on                 = [azurerm_service_plan.main, azurerm_storage_account.main]
 
   site_config {}
 }
