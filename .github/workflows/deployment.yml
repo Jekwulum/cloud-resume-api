@@ -24,6 +24,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: |
+            {
+              "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
+              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
+              "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+            }
       
       - name: 'Terraform Format'
         uses: hashicorp/terraform-github-actions@master
@@ -45,11 +56,6 @@ jobs:
           RESOURCE_GROUP_NAME="rg-cloudresumeapi"
           FUNCTION_APP_NAME="function-cloudresumeapi"
           SERVICE_PLAN_NAME="aspcloudresumeapi"
-
-          export ARM_CLIENT_ID=$ARM_CLIENT_ID
-          export ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET
-          export ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID
-          export ARM_TENANT_ID=$ARM_TENANT_ID
 
           if az group show --name $RESOURCE_GROUP_NAME; then
             terraform import azurerm_resource_group.rg_cloudresumeapi /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
