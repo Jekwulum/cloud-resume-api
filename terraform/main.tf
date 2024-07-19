@@ -19,7 +19,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "main" {
-  name     = "rg-${var.application_name}"
+  name     = "rg-cloudresumeapi"
   location = var.location
   tags = {
     environment = "dev"
