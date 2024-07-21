@@ -14,6 +14,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      APPLICATION_NAME: "cloudresumeapi"
     runs-on: ubuntu-latest
     environment: dev
 
@@ -53,11 +54,14 @@ jobs:
       - name: 'Import Existing Resources'
         run: |
           set -e
-          RESOURCE_GROUP_NAME="rg-cloudresumeapi"
-          FUNCTION_APP_NAME="functioncloudresumeapi"
-          SERVICE_PLAN_NAME="aspcloudresumeapi"
-          STORAGE_ACCOUNT_NAME="stcloudresumeapi"
-          STORAGE_CONTAINER_NAME="stcontainercloudresumeapi"
+          RESOURCE_GROUP_NAME="rg-${{ env.APPLICATION_NAME }}"
+          FUNCTION_APP_NAME="function${{ env.APPLICATION_NAME }}"
+          SERVICE_PLAN_NAME="asp${{ env.APPLICATION_NAME }}"
+          STORAGE_ACCOUNT_NAME="st${{ env.APPLICATION_NAME }}"
+          STORAGE_CONTAINER_NAME="stcontainer${{ env.APPLICATION_NAME }}"
+          COSMOSDB_ACCOUNT_NAME="cosmosmongo${{ env.APPLICATION_NAME }}"
+          # COSMOSDB_DATABASE_NAME="resumedb"
+          # COSMOSDB_COLLECTION_NAME="reasumecollection"
 
           if az group show --name $RESOURCE_GROUP_NAME; then
             terraform import azurerm_resource_group.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
@@ -78,6 +82,18 @@ jobs:
           if az storage container show --name $STORAGE_CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME; then
             terraform import azurerm_storage_container.main https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$STORAGE_CONTAINER_NAME
           fi
+          
+          # if az cosmosdb account show --name $COSMOSDB_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
+          #   terraform import azurerm_cosmosdb_account.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME
+          # fi
+
+          # if az cosmosdb mongodb database show --name $COSMOSDB_DATABASE_NAME --account-name $COSMOSDB_ACCOUNT_NAME; then
+          #   terraform import azurerm_cosmosdb_mongo_database.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME
+          # fi
+
+          # if az cosmosdb mongodb collection show --name $COSMOSDB_COLLECTION_NAME --account-name $COSMOSDB_ACCOUNT_NAME --database-name $COSMOSDB_DATABASE_NAME; then
+          #   terraform import azurerm_cosmosdb_mongo_collection.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME/collections/$COSMOSDB_COLLECTION_NAME
+          # fi
         working-directory: './terraform'
         env:
           ARM_CLIENT_ID: ${{secrets.AZURE_AD_CLIENT_ID}}
