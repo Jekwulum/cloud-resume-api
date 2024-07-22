@@ -3,8 +3,8 @@ import logging
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-@app.route(route="reume_handler")
-def reume_handler(req: func.HttpRequest) -> func.HttpResponse:
+@app.route(route="resume")
+def resume(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     name = req.params.get('name')

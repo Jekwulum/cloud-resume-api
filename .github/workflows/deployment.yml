@@ -83,15 +83,15 @@ jobs:
             terraform import azurerm_storage_container.main https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$STORAGE_CONTAINER_NAME
           fi
           
-          if az cosmosdb account show --name $COSMOSDB_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
+          if az cosmosdb show --name $COSMOSDB_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
             terraform import azurerm_cosmosdb_account.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME
           fi
 
-          if az cosmosdb mongodb database show --name $COSMOSDB_DATABASE_NAME --account-name $COSMOSDB_ACCOUNT_NAME; then
+          if az cosmosdb mongodb database show --account-name $COSMOSDB_ACCOUNT_NAME --name $COSMOSDB_DATABASE_NAME --resource-group $RESOURCE_GROUP_NAME; then
             terraform import azurerm_cosmosdb_mongo_database.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME
           fi
 
-          if az cosmosdb mongodb collection show --name $COSMOSDB_COLLECTION_NAME --account-name $COSMOSDB_ACCOUNT_NAME --database-name $COSMOSDB_DATABASE_NAME; then
+          if az cosmosdb mongodb collection show --account-name $COSMOSDB_ACCOUNT_NAME --database-name $COSMOSDB_DATABASE_NAME --name $COSMOSDB_COLLECTION_NAME --resource-group $RESOURCE_GROUP_NAME; then
             terraform import azurerm_cosmosdb_mongo_collection.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME/collections/$COSMOSDB_COLLECTION_NAME
           fi
         working-directory: './terraform'

@@ -1,7 +1,7 @@
 {
   "json.schemas": [],
   "yamlfmt.args": [],
-  "azureFunctions.deploySubpath": "app",
+  "azureFunctions.deploySubpath": "app\\function",
   "azureFunctions.scmDoBuildDuringDeployment": true,
   "azureFunctions.pythonVenv": ".venv",
   "azureFunctions.projectLanguage": "Python",
