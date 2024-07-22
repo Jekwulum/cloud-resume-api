@@ -49,7 +49,7 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
 }
 
 resource "azurerm_cosmosdb_mongo_collection" "main" {
-  name                = "reseumecollection"
+  name                = "resumecollection"
   resource_group_name = data.azurerm_cosmosdb_account.mongodb.resource_group_name
   account_name        = data.azurerm_cosmosdb_account.mongodb.name
   database_name       = azurerm_cosmosdb_mongo_database.main.name
