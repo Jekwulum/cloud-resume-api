@@ -61,7 +61,7 @@ jobs:
           STORAGE_CONTAINER_NAME="stcontainer${{ env.APPLICATION_NAME }}"
           COSMOSDB_ACCOUNT_NAME="cosmosmongo${{ env.APPLICATION_NAME }}"
           COSMOSDB_DATABASE_NAME="resumedb"
-          COSMOSDB_COLLECTION_NAME="reasumecollection"
+          COSMOSDB_COLLECTION_NAME="resumecollection"
 
           if az group show --name $RESOURCE_GROUP_NAME; then
             terraform import azurerm_resource_group.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
