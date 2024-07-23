@@ -212,3 +212,8 @@ override.tf.json
 terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/python,terraform
+
+*_azurite*
+*storage*
+
+.python_packages
