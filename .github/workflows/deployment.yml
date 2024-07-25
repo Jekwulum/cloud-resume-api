@@ -127,7 +127,7 @@ jobs:
     name: 'Deploy Python Function App'
     env:
       AZURE_FUNCTIONAPP_NAME: 'functioncloudresumeapi'   # set this to your function app name on Azure
-      AZURE_FUNCTIONAPP_PACKAGE_PATH: '/app'       # set this to the path to your function app project, defaults to the repository root
+      AZURE_FUNCTIONAPP_PACKAGE_PATH: 'app'       # set this to the path to your function app project, defaults to the repository root
       PYTHON_VERSION: '3.11.1' 
     runs-on: ubuntu-latest
     environment: dev
