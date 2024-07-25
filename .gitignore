@@ -213,7 +213,9 @@ terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/python,terraform
 
-*_azurite*
+**_azurite*
 *storage*
 
 .python_packages
+
+*resume.json
