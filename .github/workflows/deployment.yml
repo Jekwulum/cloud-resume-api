@@ -7,121 +7,121 @@ on:
   pull_request:
 
 jobs:
-  # terraform:
-  #   name: 'Terraform'
-  #   env:
-  #     ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-  #     ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-  #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  #     ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-  #     APPLICATION_NAME: "cloudresumeapi"
-  #   runs-on: ubuntu-latest
-  #   environment: dev
+  terraform:
+    name: 'Terraform'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      APPLICATION_NAME: "cloudresumeapi"
+    runs-on: ubuntu-latest
+    environment: dev
 
-  #   defaults:
-  #     run:
-  #       shell: bash
+    defaults:
+      run:
+        shell: bash
     
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  #     - name: 'Login via Azure CLI'
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: |
-  #           {
-  #             "clientId": "${{ secrets.AZURE_AD_CLIENT_ID }}",
-  #             "clientSecret": "${{ secrets.AZURE_AD_CLIENT_SECRET }}",
-  #             "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
-  #             "tenantId": "${{ secrets.AZURE_AD_TENANT_ID }}"
-  #           }
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: |
+            {
+              "clientId": "${{ secrets.AZURE_AD_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.AZURE_AD_CLIENT_SECRET }}",
+              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
+              "tenantId": "${{ secrets.AZURE_AD_TENANT_ID }}"
+            }
       
-  #     - name: 'Terraform Format'
-  #       uses: hashicorp/terraform-github-actions@master
-  #       with:
-  #         tf_actions_version: 1.9.2
-  #         tf_actions_subcommand: 'fmt'
-  #         tf_actions_working_dir: './terraform'
+      - name: 'Terraform Format'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.9.2
+          tf_actions_subcommand: 'fmt'
+          tf_actions_working_dir: './terraform'
       
-  #     - name: 'Terraform Init'
-  #       uses: hashicorp/terraform-github-actions@master
-  #       with:
-  #         tf_actions_version: 1.9.2
-  #         tf_actions_subcommand: 'init'
-  #         tf_actions_working_dir: './terraform'
+      - name: 'Terraform Init'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.9.2
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: './terraform'
 
-  #     - name: 'Import Existing Resources'
-  #       run: |
-  #         set -e
-  #         RESOURCE_GROUP_NAME="rg-${{ env.APPLICATION_NAME }}"
-  #         FUNCTION_APP_NAME="function${{ env.APPLICATION_NAME }}"
-  #         SERVICE_PLAN_NAME="asp${{ env.APPLICATION_NAME }}"
-  #         STORAGE_ACCOUNT_NAME="st${{ env.APPLICATION_NAME }}"
-  #         STORAGE_CONTAINER_NAME="stcontainer${{ env.APPLICATION_NAME }}"
-  #         COSMOSDB_ACCOUNT_NAME="cosmosmongo${{ env.APPLICATION_NAME }}"
-  #         COSMOSDB_DATABASE_NAME="resumedb"
-  #         COSMOSDB_COLLECTION_NAME="resumecollection"
+      - name: 'Import Existing Resources'
+        run: |
+          set -e
+          RESOURCE_GROUP_NAME="rg-${{ env.APPLICATION_NAME }}"
+          FUNCTION_APP_NAME="function${{ env.APPLICATION_NAME }}"
+          SERVICE_PLAN_NAME="asp${{ env.APPLICATION_NAME }}"
+          STORAGE_ACCOUNT_NAME="st${{ env.APPLICATION_NAME }}"
+          STORAGE_CONTAINER_NAME="stcontainer${{ env.APPLICATION_NAME }}"
+          COSMOSDB_ACCOUNT_NAME="cosmosmongo${{ env.APPLICATION_NAME }}"
+          COSMOSDB_DATABASE_NAME="resumedb"
+          COSMOSDB_COLLECTION_NAME="resumecollection"
 
-  #         if az group show --name $RESOURCE_GROUP_NAME; then
-  #           terraform import azurerm_resource_group.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
-  #         fi
+          if az group show --name $RESOURCE_GROUP_NAME; then
+            terraform import azurerm_resource_group.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME
+          fi
 
-  #         if az functionapp show --name $FUNCTION_APP_NAME --resource-group $RESOURCE_GROUP_NAME; then
-  #           terraform import azurerm_linux_function_app.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Web/sites/$FUNCTION_APP_NAME
-  #         fi
+          if az functionapp show --name $FUNCTION_APP_NAME --resource-group $RESOURCE_GROUP_NAME; then
+            terraform import azurerm_linux_function_app.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Web/sites/$FUNCTION_APP_NAME
+          fi
 
-  #         if az appservice plan show --name $SERVICE_PLAN_NAME --resource-group $RESOURCE_GROUP_NAME; then
-  #           terraform import azurerm_service_plan.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Web/serverfarms/$SERVICE_PLAN_NAME
-  #         fi
+          if az appservice plan show --name $SERVICE_PLAN_NAME --resource-group $RESOURCE_GROUP_NAME; then
+            terraform import azurerm_service_plan.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Web/serverfarms/$SERVICE_PLAN_NAME
+          fi
 
-  #         if az storage account show --name $STORAGE_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
-  #           terraform import azurerm_storage_account.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME
-  #         fi
+          if az storage account show --name $STORAGE_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
+            terraform import azurerm_storage_account.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME
+          fi
 
-  #         if az storage container show --name $STORAGE_CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME; then
-  #           terraform import azurerm_storage_container.main https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$STORAGE_CONTAINER_NAME
-  #         fi
+          if az storage container show --name $STORAGE_CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME; then
+            terraform import azurerm_storage_container.main https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$STORAGE_CONTAINER_NAME
+          fi
           
-  #         if az cosmosdb show --name $COSMOSDB_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
-  #           terraform import azurerm_cosmosdb_account.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME
-  #         fi
+          if az cosmosdb show --name $COSMOSDB_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME; then
+            terraform import azurerm_cosmosdb_account.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME
+          fi
 
-  #         if az cosmosdb mongodb database show --account-name $COSMOSDB_ACCOUNT_NAME --name $COSMOSDB_DATABASE_NAME --resource-group $RESOURCE_GROUP_NAME; then
-  #           terraform import azurerm_cosmosdb_mongo_database.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME
-  #         fi
+          if az cosmosdb mongodb database show --account-name $COSMOSDB_ACCOUNT_NAME --name $COSMOSDB_DATABASE_NAME --resource-group $RESOURCE_GROUP_NAME; then
+            terraform import azurerm_cosmosdb_mongo_database.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME
+          fi
 
-  #         if az cosmosdb mongodb collection show --account-name $COSMOSDB_ACCOUNT_NAME --database-name $COSMOSDB_DATABASE_NAME --name $COSMOSDB_COLLECTION_NAME --resource-group $RESOURCE_GROUP_NAME; then
-  #           terraform import azurerm_cosmosdb_mongo_collection.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME/collections/$COSMOSDB_COLLECTION_NAME
-  #         fi
-  #       working-directory: './terraform'
-  #       env:
-  #         ARM_CLIENT_ID: ${{secrets.AZURE_AD_CLIENT_ID}}
-  #         ARM_CLIENT_SECRET: ${{secrets.AZURE_AD_CLIENT_SECRET}}
-  #         ARM_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
-  #         ARM_TENANT_ID: ${{secrets.AZURE_AD_TENANT_ID}}
+          if az cosmosdb mongodb collection show --account-name $COSMOSDB_ACCOUNT_NAME --database-name $COSMOSDB_DATABASE_NAME --name $COSMOSDB_COLLECTION_NAME --resource-group $RESOURCE_GROUP_NAME; then
+            terraform import azurerm_cosmosdb_mongo_collection.main /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.DocumentDB/databaseAccounts/$COSMOSDB_ACCOUNT_NAME/mongodbDatabases/$COSMOSDB_DATABASE_NAME/collections/$COSMOSDB_COLLECTION_NAME
+          fi
+        working-directory: './terraform'
+        env:
+          ARM_CLIENT_ID: ${{secrets.AZURE_AD_CLIENT_ID}}
+          ARM_CLIENT_SECRET: ${{secrets.AZURE_AD_CLIENT_SECRET}}
+          ARM_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+          ARM_TENANT_ID: ${{secrets.AZURE_AD_TENANT_ID}}
       
-  #     - name: 'Terraform Validate'
-  #       uses: hashicorp/terraform-github-actions@master
-  #       with:
-  #         tf_actions_version: 1.9.2
-  #         tf_actions_subcommand: 'validate'
-  #         tf_actions_working_dir: './terraform'
+      - name: 'Terraform Validate'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.9.2
+          tf_actions_subcommand: 'validate'
+          tf_actions_working_dir: './terraform'
       
-  #     - name: 'Terraform Plan'
-  #       uses: hashicorp/terraform-github-actions@master
-  #       with:
-  #         tf_actions_version: 1.9.2
-  #         tf_actions_subcommand: 'plan'
-  #         tf_actions_working_dir: './terraform'
+      - name: 'Terraform Plan'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.9.2
+          tf_actions_subcommand: 'plan'
+          tf_actions_working_dir: './terraform'
       
-  #     - name: 'Terraform Apply'
-  #       if: github.ref == 'refs/heads/master'
-  #       uses: hashicorp/terraform-github-actions@master
-  #       with:
-  #         tf_actions_version: 1.9.2
-  #         tf_actions_subcommand: 'apply'
-  #         tf_actions_working_dir: './terraform'
+      - name: 'Terraform Apply'
+        if: github.ref == 'refs/heads/master'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.9.2
+          tf_actions_subcommand: 'apply'
+          tf_actions_working_dir: './terraform'
 
   deploy-function-app:
     name: 'Deploy Python Function App'
@@ -131,7 +131,7 @@ jobs:
       PYTHON_VERSION: '3.11.1' 
     runs-on: ubuntu-latest
     environment: dev
-    # needs: terraform
+    needs: terraform
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v3

@@ -6,6 +6,10 @@ resource "azurerm_cosmosdb_account" "main" {
   enable_automatic_failover = true
   kind                      = "MongoDB"
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   capabilities {
     name = "EnableAggregationPipeline"
   }
