@@ -26,15 +26,15 @@ cloud_resume_api/
 
 # Prerequisites
 Before you begin, ensure you have the following installed on your local machine:
-[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-[Terraform](https://developer.hashicorp.com/terraform/install?product_intent=terraform)
-[Python 3.9+](https://www.python.org/downloads/)
-[Git](https://git-scm.com/downloads)
+  - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+  - [Terraform](https://developer.hashicorp.com/terraform/install?product_intent=terraform)
+  - [Python 3.9+](https://www.python.org/downloads/)
+  - [Git](https://git-scm.com/downloads)
 
 # Running the Application
 1. Clone the repository:
     ```shell
-    git clone git@github.com:Jekwulum/cloud-resume-api.git
+    git clone https://github.com/Jekwulum/cloud-resume-api.git
     cd cloud-resume-api
     ```
 2. Navigate to the app directory and create a virtual environment:
