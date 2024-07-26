@@ -41,9 +41,5 @@ resource "azurerm_linux_function_app" "main" {
     "AzureWebJobsFeatureFlags" = "EnableWorkerIndexing"
   }
 
-  site_config {
-    application_stack {
-      python_version = "3.9"
-    }
-  }
+  site_config {}
 }
