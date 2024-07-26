@@ -26,7 +26,7 @@ resource "azurerm_service_plan" "main" {
 }
 
 resource "azurerm_linux_function_app" "main" {
-  name                = "function${var.application_name}"
+  name                = "jk${var.application_name}"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
 
@@ -34,6 +34,12 @@ resource "azurerm_linux_function_app" "main" {
   storage_account_access_key = azurerm_storage_account.main.primary_access_key
   service_plan_id            = azurerm_service_plan.main.id
   # depends_on                 = [azurerm_service_plan.main, azurerm_storage_account.main]
+
+  app_settings = {
+    "ENABLE_ORYX_BUILD"              = "true"
+    "FUNCTIONS_WORKER_RUNTIME"       = "python"
+    "AzureWebJobsFeatureFlags"       = "EnableWorkerIndexing"
+  }
 
   site_config {}
 }
