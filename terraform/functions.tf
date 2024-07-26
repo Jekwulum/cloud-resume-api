@@ -35,5 +35,15 @@ resource "azurerm_linux_function_app" "main" {
   service_plan_id            = azurerm_service_plan.main.id
   # depends_on                 = [azurerm_service_plan.main, azurerm_storage_account.main]
 
-  site_config {}
+  app_settings = {
+    "ENABLE_ORYX_BUILD"              = "true"
+    "FUNCTIONS_WORKER_RUNTIME"       = "python"
+    "AzureWebJobsFeatureFlags"       = "EnableWorkerIndexing"
+  }
+
+  site_config {
+    application_stack {
+      python_version = "3.9"
+    }
+  }
 }
